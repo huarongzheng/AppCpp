@@ -1,10 +1,11 @@
 CXXFLAGS =	-O2 -g -Wall -fmessage-length=0
 
-OBJS =		MatchEngine.o
+OBJS =		Polymorphism.o
 
 LIBS =
 
-TARGET =	MatchEngineData/AppCpp
+#TARGET =	MatchEngineData/AppCpp
+TARGET =	AppCpp
 
 $(TARGET):	$(OBJS)
 	$(CXX) -o $(TARGET) $(OBJS) $(LIBS)
