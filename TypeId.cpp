@@ -22,64 +22,64 @@ typedef unsigned long u32_t;
 typedef long s32_t;
 
 
-enum class Fruit { apple, orange, pear };
-enum class Color { red, green, orange };
+enum Fruit { apple, banana, pear };
+enum Color { red, green, orange };
 
 template <typename T> struct Traits;
 
 template <typename T> struct Traits
 {
 public:
-	Traits()
+    Traits()
     {
 
     }
 
-	static string name(int nIndex)
-	{
-		string *typeString;
-		int    ntypeSize;
-		if (typeid(T) == typeid(Fruit))
-		{
-			ntypeSize = 3;
-			typeString = fruitString;
-		}
-		else if (typeid(T) == typeid(Color))
-		{
-			ntypeSize = 3;
-			typeString = colorString;
-		}
-		else
-		{
-			assert(0);
-		}
+    static string name(int nIndex)
+    {
+        string *typeString;
+        int    ntypeSize;
+        if (typeid(T) == typeid(Fruit))
+        {
+            ntypeSize = 3;
+            typeString = fruitString;
+        }
+        else if (typeid(T) == typeid(Color))
+        {
+            ntypeSize = 3;
+            typeString = colorString;
+        }
+        else
+        {
+            assert(0);
+        }
 
-		if (nIndex<ntypeSize && nIndex>=0)
-		{
-			return typeString[nIndex];
-		}
-		else
-		{
-			return "unknown";
-		}
-	}
+        if (nIndex<ntypeSize && nIndex>=0)
+        {
+            return typeString[nIndex];
+        }
+        else
+        {
+            return "unknown";
+        }
+    }
 
-	static string fruitString[3];
-	static string colorString[3];
+    static string fruitString[3];
+    static string colorString[3];
 
 };
 
-template<class T> string Traits<T>::fruitString[3] = {"apple", "orange", "pear"};
+template<class T> string Traits<T>::fruitString[3] = {"apple", "banana", "pear"};
 template<class T> string Traits<T>::colorString[3] = {"red", "green", "orange"};
 
 int main()
 {
-	ifstream cin("input");
-	int t = 0; std::cin >> t;
+    ifstream cin("input");
+    int t = 0; cin >> t;
 
     for (int i=0; i!=t; ++i) {
-        int index1; std::cin >> index1;
-        int index2; std::cin >> index2;
+        int index1; cin >> index1;
+        int index2; cin >> index2;
         cout << Traits<Color>::name(index1) << " ";
         cout << Traits<Fruit>::name(index2) << "\n";
     }
