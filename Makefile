@@ -1,6 +1,6 @@
 CXXFLAGS =	-g -Wall -fmessage-length=0
 
-OBJS =		Polymorphism.o
+OBJS =		RollDice.o
 
 LIBS =
 
