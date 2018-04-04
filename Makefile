@@ -1,14 +1,14 @@
-CXXFLAGS =	-g -Wall -fmessage-length=0
+CXXFLAGS =	-Wl,--no-as-needed -std=c++11 -pthread
 
-OBJS =		RollDice.o
+OBJS =		thread.o
 
-LIBS =
+LIBS = 
 
 #TARGET =	MatchEngineData/AppCpp
 TARGET =	AppCpp
 
 $(TARGET):	$(OBJS)
-	$(CXX) -o $(TARGET) $(OBJS) $(LIBS)
+	$(CXX) -o $(TARGET) $(OBJS) $(LIBS) -std=c++11 -pthread
 
 all:	$(TARGET)
 
