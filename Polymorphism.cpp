@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <iostream>
+using namespace std;
+
 class Parent
 {
 public:
@@ -46,7 +48,6 @@ int main()
     Parent *p1 = new ChildOne();
     Parent *p2 = new Parent();
     ChildOne *p3 = new ChildOne();
-    //ChildOne *p4 = new Parent(); /dynamic_case fail
 
     p1->F(); //调用Parent.F()
     p1->G(); //实现多态
@@ -56,6 +57,16 @@ int main()
 
     p3->F();
     p3->G();
+
+
+    ChildOne *p4;
+    //p4 = new Parent(); //compilation error: invalid conversion from ‘Parent*’ to ‘ChildOne*’ [-fpermissive]
+    p4 = dynamic_cast<ChildOne *>(p1);
+    cout << "cast C->P->C succes sresult =" << p4 << endl;
+    p4 = dynamic_cast<ChildOne *>(p2);
+    cout << "cast P->C fail result =" << p4 << endl;
+    Parent *p5 = dynamic_cast<Parent *>(p3);
+    cout << "cast C->P succes result =" << p5 << endl;
 
 
     //重载(overload)
