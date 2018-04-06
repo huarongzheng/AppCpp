@@ -27,7 +27,6 @@ int main()
 
   return 0;
 }
-#endif
 
 
 // timed_mutex::try_lock_for example
@@ -59,4 +58,109 @@ int main ()
   for (auto& th : threads) th.join();
 
   return 0;
+}
+
+#include <memory>
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    struct Son
+    {
+        int age;
+    };
+    struct Father
+    {
+        Son son;
+    };
+
+    shared_ptr<Father> father = make_shared<Father>();
+    shared_ptr<Son> sona(father, &father->son);
+
+    cout << father.use_count()  << endl;
+    cout << sona.use_count()    << endl;
+    father.reset();
+    cout << father.use_count()  << endl;
+    cout << sona.use_count()    << endl;
+    sona.reset();
+    cout << father.use_count()  << endl;
+    cout << sona.use_count()    << endl;
+}
+
+
+#include <sys/mman.h>  
+#include <sys/types.h>  
+#include <sys/stat.h>  
+#include <fcntl.h>  
+#include <unistd.h>  
+#include <stdio.h>  
+
+int main(int argc, char** argv)  
+{  
+    int fd,i;  
+    int pagesize,offset;  
+    char *p_map;  
+    struct stat sb;  
+
+    /* ??page size */  
+    pagesize = sysconf(_SC_PAGESIZE);  
+    printf("pagesize is %d\n",pagesize);  
+
+    /* ???? */  
+    fd = open(argv[1], O_RDWR, 00777);  
+    fstat(fd, &sb);  
+    printf("file size is %zd\n", (size_t)sb.st_size);  
+
+    offset = 0;   
+    p_map = (char *)mmap(NULL, pagesize * 2, PROT_READ|PROT_WRITE,   
+            MAP_SHARED, fd, offset);  
+    close(fd);  
+
+    printf("char %c\n", p_map[sb.st_size+20]);  
+    p_map[sb.st_size+1000] = '8';  /* ?????? */  
+    p_map[pagesize] = '9';    /* ????? */  
+    printf("string %s\n", p_map);  
+
+    munmap(p_map, pagesize * 2);  
+
+    return 0;  
+}  
+#endif
+
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<unistd.h>
+#include<sys/types.h>
+#include<sys/stat.h>
+#include<fcntl.h>
+#include<sys/wait.h>
+
+int main()
+{
+    int fd;
+    char c[3];
+    char s[] = "I am child process\n";
+
+    fd = open("data.txt",O_RDWR,0);
+
+    pid_t mypid = fork();
+    if (mypid == 0)
+    {
+        fd = 1;//stdout  
+        printf("%d\n", (unsigned int)(sizeof(s)));
+        write(fd,s,sizeof(s));
+        sleep(3);
+        exit(0);
+    }
+    else
+    {
+        wait(NULL);
+        read(fd,c,2);
+        c[2]='\0';
+        printf("c = %s\n",c);
+        exit(0);
+    }
 }
