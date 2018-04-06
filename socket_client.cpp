@@ -9,7 +9,8 @@
 void test_connect()
 {
     unsigned short port = 8000;             // 服务器的端口号
-    char *server_ip = "10.221.20.12";       // 服务器ip地址
+    char serverip[] = "192.168.10.100";       // 服务器ip地址
+    char *server_ip = serverip;       // 服务器ip地址
 
     int sockfd;
     sockfd = socket(AF_INET, SOCK_STREAM, 0);// 创建通信端点：套接字
