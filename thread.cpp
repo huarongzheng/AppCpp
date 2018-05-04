@@ -104,28 +104,28 @@ int main(int argc, char** argv)
     char *p_map;  
     struct stat sb;  
 
-    /* ??page size */  
-    pagesize = sysconf(_SC_PAGESIZE);  
-    printf("pagesize is %d\n",pagesize);  
+    /* ??page size */
+    pagesize = sysconf(_SC_PAGESIZE);
+    printf("pagesize is %d\n",pagesize);
 
-    /* ???? */  
-    fd = open(argv[1], O_RDWR, 00777);  
-    fstat(fd, &sb);  
-    printf("file size is %zd\n", (size_t)sb.st_size);  
+    /* ???? */
+    fd = open(argv[1], O_RDWR, 00777);
+    fstat(fd, &sb);
+    printf("file size is %zd\n", (size_t)sb.st_size);
 
-    offset = 0;   
-    p_map = (char *)mmap(NULL, pagesize * 2, PROT_READ|PROT_WRITE,   
-            MAP_SHARED, fd, offset);  
-    close(fd);  
+    offset = 0;
+    p_map = (char *)mmap(NULL, pagesize * 2, PROT_READ|PROT_WRITE,
+            MAP_SHARED, fd, offset);
+    close(fd);
 
-    printf("char %c\n", p_map[sb.st_size+20]);  
-    p_map[sb.st_size+1000] = '8';  /* ?????? */  
-    p_map[pagesize] = '9';    /* ????? */  
-    printf("string %s\n", p_map);  
+    printf("char %c\n", p_map[sb.st_size+20]);
+    p_map[sb.st_size+1000] = '8';  /* ?????? */
+    p_map[pagesize] = '9';    /* ????? */
+    printf("string %s\n", p_map);
 
-    munmap(p_map, pagesize * 2);  
+    munmap(p_map, pagesize * 2);
 
-    return 0;  
+    return 0;
 }  
 #endif
 
@@ -137,12 +137,60 @@ int main(int argc, char** argv)
 #include<sys/stat.h>
 #include<fcntl.h>
 #include<sys/wait.h>
+#include<vector>
+#include<iostream>
+#include<time.h>
+#include <algorithm>
+
+using namespace std;
+
+typedef void (*FP)(int);
+
+struct SumClass
+{
+    inline void operator()(int t)
+    {
+        static long long sum = 0;
+        sum += t;
+    }
+};
+
+inline void sumUp(int t)
+{
+    static long long sum = 0;
+    sum += t;
+}
 
 int main()
 {
+    const int SIZE_VECTOR = 10000000;
+    vector<int> vInt;
+    for (int i = 0; i < SIZE_VECTOR; ++i)
+    {
+        vInt.push_back(i);
+    }
+    auto sumObj = SumClass();
+
+    long beginTime = clock();
+    for (int i = 0; i < 100; ++i)
+    {
+        for_each(vInt.begin(), vInt.end(), sumUp);
+        //for_each(vInt.begin(), vInt.end(), sumObj);
+        //for_each(vInt.begin(), vInt.end(), [](int t){
+        //    static long long sum = 0;
+        //    sum += t;
+        //});
+    }
+    long endTime = clock();
+    cout<<"beginTime:"<<beginTime<<"  endTime:"<<endTime<<"  endTime-beginTime:"<<double(endTime-beginTime)/CLOCKS_PER_SEC<<endl;
+
+
+#if 0
     int fd;
     char c[3];
     char s[] = "I am child process\n";
+    vector<int> bias_shape(false, 18);
+    printf("%d\n", bias_shape[0]);
 
     fd = open("data.txt",O_RDWR,0);
 
@@ -163,4 +211,5 @@ int main()
         printf("c = %s\n",c);
         exit(0);
     }
+#endif
 }

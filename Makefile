@@ -1,4 +1,4 @@
-CXXFLAGS =	-Wl,--no-as-needed -std=c++11 -pthread
+CXXFLAGS =	-O2 -Wl,--no-as-needed -std=c++11 -pthread
 
 OBJS =		thread.o
 
