@@ -172,6 +172,12 @@ T *SharedPtr<T>::operator->()
 //    printf("SharedPtr(& other) copy ctor, current ref count=%d", this->m_pRef->m_RefCount);
 //}
 
+struct MyStruct
+{
+    int nA;
+    int nB;
+};
+
 int main()
 {
    SharedPtr<int>* pPtr = NULL;
@@ -194,6 +200,12 @@ int main()
 
        SharedPtr<int> *pPtr = &ptr2;
        printf("test **pPtr=%d\r\n", *(*pPtr));
+
+       //MyStruct myStruct1 = {.nA=1, .nB=7};
+       SharedPtr<MyStruct> ptr3(new MyStruct);
+       ptr3->nA = 21;
+
+       cout << "myStruct1.nA = " << ptr3->nA << endl;
     }
 
     sleep(2);

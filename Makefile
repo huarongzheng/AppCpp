@@ -1,6 +1,7 @@
-CXXFLAGS =	-O2 -Wl,--no-as-needed -std=c++11 -pthread
+CXXFLAGS =	-Wl,--no-as-needed -DDEBUG -g -std=c++11 -pthread
+#CXXFLAGS =	-O2 -Wl,--no-as-needed -DDEBUG -g -std=c++11 -pthread
 
-OBJS =		thread.o
+OBJS =		sharedPtr.o
 
 LIBS = 
 
