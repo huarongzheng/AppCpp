@@ -1,7 +1,7 @@
 CXXFLAGS =	-Wl,--no-as-needed -DDEBUG -g -std=c++11 -pthread
 #CXXFLAGS =	-O2 -Wl,--no-as-needed -DDEBUG -g -std=c++11 -pthread
 
-OBJS =		sharedPtr.o
+OBJS =		thread.o
 
 LIBS = 
 
@@ -9,7 +9,7 @@ LIBS =
 TARGET =	AppCpp
 
 $(TARGET):	$(OBJS)
-	$(CXX) -o $(TARGET) $(OBJS) $(LIBS) -std=c++11 -pthread
+	$(CXX) -DDEBUG -o $(TARGET) $(OBJS) $(LIBS) -std=c++11 -pthread
 
 all:	$(TARGET)
 

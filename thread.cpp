@@ -138,9 +138,10 @@ int main(int argc, char** argv)
 #include<fcntl.h>
 #include<sys/wait.h>
 #include<vector>
+#include<array>
 #include<iostream>
 #include<time.h>
-#include <algorithm>
+#include<algorithm>
 
 using namespace std;
 
@@ -164,6 +165,18 @@ inline void sumUp(int t)
 int main()
 {
 
+    int i;
+    float f = -1.0;
+    i = *(int *)&f;
+    printf("val of i=%x\n", i);
+/*
+    vector<int> ary(10,2);
+    //int ary[10];
+    for (int i=0; i<100; ++i)
+    {
+        ary[i]=0;
+    }
+*/
 #if 0
     const int SIZE_VECTOR = 10000000;
     vector<int> vInt;
