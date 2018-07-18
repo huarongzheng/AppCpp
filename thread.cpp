@@ -163,6 +163,8 @@ inline void sumUp(int t)
 
 int main()
 {
+
+#if 0
     const int SIZE_VECTOR = 10000000;
     vector<int> vInt;
     for (int i = 0; i < SIZE_VECTOR; ++i)
@@ -185,7 +187,6 @@ int main()
     cout<<"beginTime:"<<beginTime<<"  endTime:"<<endTime<<"  endTime-beginTime:"<<double(endTime-beginTime)/CLOCKS_PER_SEC<<endl;
 
 
-#if 0
     int fd;
     char c[3];
     char s[] = "I am child process\n";
@@ -211,5 +212,16 @@ int main()
         printf("c = %s\n",c);
         exit(0);
     }
+    const char *s1  = "hellohwc";
+    char s2[] = "hellohwc";
+    char s3[100];
+    char *s4=(char*)malloc(100);
+    void *s5=(void*)malloc(100);
+    cout << sizeof(s1) << endl; 
+    cout << sizeof(s2) << endl;
+    cout << sizeof(s3) << endl;
+    cout << sizeof(s4) << endl;
+    cout << sizeof(s5) << endl;
+    cout << sizeof(char) << endl;
 #endif
 }
