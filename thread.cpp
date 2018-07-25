@@ -166,9 +166,11 @@ int main()
 {
 
     int i;
+    typeof(i) a=6;
     float f = -1.0;
     i = *(int *)&f;
-    printf("val of i=%x\n", i);
+    printf("val of i=%x, a=%d\n", i, a);
+
 /*
     vector<int> ary(10,2);
     //int ary[10];
@@ -177,7 +179,6 @@ int main()
         ary[i]=0;
     }
 */
-#if 0
     const int SIZE_VECTOR = 10000000;
     vector<int> vInt;
     for (int i = 0; i < SIZE_VECTOR; ++i)
@@ -200,6 +201,7 @@ int main()
     cout<<"beginTime:"<<beginTime<<"  endTime:"<<endTime<<"  endTime-beginTime:"<<double(endTime-beginTime)/CLOCKS_PER_SEC<<endl;
 
 
+#if 0
     int fd;
     char c[3];
     char s[] = "I am child process\n";
