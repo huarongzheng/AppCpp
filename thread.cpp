@@ -164,12 +164,10 @@ inline void sumUp(int t)
 
 int main()
 {
-
     int i;
-    typeof(i) a=6;
     float f = -1.0;
     i = *(int *)&f;
-    printf("val of i=%x, a=%d\n", i, a);
+    printf("val of i=%x\n", i);
 
 /*
     vector<int> ary(10,2);
