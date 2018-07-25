@@ -168,7 +168,6 @@ int main()
     float f = -1.0;
     i = *(int *)&f;
     printf("val of i=%x\n", i);
-
 /*
     vector<int> ary(10,2);
     //int ary[10];
