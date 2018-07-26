@@ -70,9 +70,12 @@ int main()
     pTest1->num = &i;
     cout << *pTest1->num << endl; // that is *(pTest1->num) -> triumph * or &
 
+    int a[0];
+    a[0] = 1;
+    cout << a[0] << " " << sizeof(a[0]) << " " << sizeof(a) << endl;
 
     //'0' = 0011 0000     'l'  = 0110 1100
-    char str[100] = "0134324324afsadfsdlfjlsdjfl"; 
+    char str[100] = "0134324324afsadfsdlfjlsdjfl";
     struct A d;
     memcpy(&d, str, sizeof(A));
     cout << d.a << endl;

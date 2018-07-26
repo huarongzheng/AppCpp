@@ -2,6 +2,7 @@ CXXFLAGS =	-Wl,--no-as-needed -DDEBUG -g -std=gnu++11 -pthread
 #CXXFLAGS =	-O2 -Wl,--no-as-needed -DDEBUG -g -std=c++11 -pthread
 
 OBJS =		kernelTest.o
+#OBJS =		thread.o
 
 LIBS = 
 
