@@ -25,7 +25,7 @@ struct TestStruct {
     float fVal;
 };
 struct TestStruct1 {
-    int   num;
+    int  *num;
     char  ch;
     float fVal;
     char  ch1;
@@ -58,13 +58,17 @@ int main()
     cout << (testArray)<< endl;
     printf("addr=0x%lx\n", (long unsigned)(char *)testArray+1);
 
-    TestStruct *test;
+    TestStruct *pTest;
     TestStruct init_struct={12,'a',12.3};
     char *pCh = &init_struct.ch;
-    test = container_of(pCh, TestStruct, ch);
-    printf("TestStruct->num =%d\n", test->num);
-    printf("TestStruct->ch =%c\n",  test->ch);
-    printf("TestStruct->ch =%f\n",  test->fVal);
+    pTest = container_of(pCh, TestStruct, ch);
+    printf("TestStruct->num =%d\n", pTest->num);
+    printf("TestStruct->ch =%c\n",  pTest->ch);
+    printf("TestStruct->ch =%f\n",  pTest->fVal);
+
+    TestStruct1 *pTest1;
+    pTest1->num = &i;
+    cout << *pTest1->num << endl; // that is *(pTest1->num) -> triumph * or &
 
 
     //'0' = 0011 0000     'l'  = 0110 1100
