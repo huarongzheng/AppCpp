@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<memory.h>
 #include<stdlib.h>
 #include<unistd.h>
 #include<sys/types.h>
@@ -26,14 +27,25 @@ struct TestStruct {
 struct TestStruct1 {
     int   num;
     char  ch;
-    char  ch1;
-    char  ch2;
     float fVal;
+    char  ch1;
+};
+
+struct TestStruct2 {
+    char a:3;
+    char b:3;
+    char c:3;
+    char d:3;
+    char e:3;
+};
+struct A{
+    int a:5;
+    int b:3;
 };
 
 int main()
 {
-    printf("offset is %u\n", offsetof(TestStruct, fVal));
+    printf("offset is %lu\n", offsetof(TestStruct, fVal));
 
     TestStruct testArray[10];
     int i=0;
@@ -42,8 +54,9 @@ int main()
         i++;
     }
     cout << sizeof(TestStruct1)<< endl;
+    cout << sizeof(TestStruct2)<< endl;
     cout << (testArray)<< endl;
-    printf("addr=0x%lx\n", (char *)testArray+1);
+    printf("addr=0x%lx\n", (long unsigned)(char *)testArray+1);
 
     TestStruct *test;
     TestStruct init_struct={12,'a',12.3};
@@ -52,5 +65,14 @@ int main()
     printf("TestStruct->num =%d\n", test->num);
     printf("TestStruct->ch =%c\n",  test->ch);
     printf("TestStruct->ch =%f\n",  test->fVal);
+
+
+    //'0' = 0011 0000     'l'  = 0110 1100
+    char str[100] = "0134324324afsadfsdlfjlsdjfl"; 
+    struct A d;
+    memcpy(&d, str, sizeof(A));
+    cout << d.a << endl;
+    cout << d.b << endl;
+
     return 0;
 }
