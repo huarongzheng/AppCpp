@@ -11,6 +11,7 @@
 #include<iostream>
 #include<time.h>
 #include<algorithm>
+#include<typeinfo>
 
 using namespace std;
 
@@ -31,16 +32,18 @@ struct TestStruct1 {
     char  ch1;
 };
 
-struct TestStruct2 {
-    char a:3;
-    char b:3;
-    char c:3;
-    char d:3;
-    char e:3;
-};
-struct A{
-    int a:5;
+struct BitField{
+    int a:5; // char is at least 1 byte, int at lesat 4
     int b:3;
+    //int c:3; //no straddling byte
+};
+
+struct Flex {
+    union {   // union U is defining an union not declaring one thus no size. here the declaration is of size 4
+        int   num;
+        char  ch;
+    };
+    int buf[0];
 };
 
 int main()
@@ -53,8 +56,6 @@ int main()
         ele.num = i;
         i++;
     }
-    cout << sizeof(TestStruct1)<< endl;
-    cout << sizeof(TestStruct2)<< endl;
     cout << (testArray)<< endl;
     printf("addr=0x%lx\n", (long unsigned)(char *)testArray+1);
 
@@ -66,20 +67,25 @@ int main()
     printf("TestStruct->ch =%c\n",  pTest->ch);
     printf("TestStruct->ch =%f\n",  pTest->fVal);
 
-    TestStruct1 *pTest1;
+
+    TestStruct1 *pTest1=new TestStruct1();
+    cout << sizeof(TestStruct1) << endl;
     pTest1->num = &i;
     cout << *pTest1->num << endl; // that is *(pTest1->num) -> triumph * or &
 
-    int a[0];
-    a[0] = 1;
-    cout << a[0] << " " << sizeof(a[0]) << " " << sizeof(a) << endl;
+
+    Flex flex;
+    cout << "size of Flex " << sizeof(Flex) << endl;
+    cout << "address flex=" << (&flex)<< " flex+1=" << (&flex)+1 << endl;
+    cout << "type of flex " << typeid((&flex)+1).name() << endl;
 
     //'0' = 0011 0000     'l'  = 0110 1100
     char str[100] = "0134324324afsadfsdlfjlsdjfl";
-    struct A d;
-    memcpy(&d, str, sizeof(A));
-    cout << d.a << endl;
-    cout << d.b << endl;
+    BitField bitField;
+    cout << sizeof(BitField) << endl;
+    memcpy(&bitField, str, sizeof(BitField));
+    cout << bitField.a << endl;
+    cout << bitField.b << endl;
 
     return 0;
 }
