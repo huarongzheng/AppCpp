@@ -225,6 +225,8 @@ int main()
         printf("c = %s\n",c);
         exit(0);
     }
+#endif
+
     const char *s1  = "hellohwc";
     char s2[] = "hellohwc";
     char s3[100];
@@ -236,5 +238,6 @@ int main()
     cout << sizeof(s4) << endl;
     cout << sizeof(s5) << endl;
     cout << sizeof(char) << endl;
-#endif
+    cout << sizeof(unsigned long) << endl;
+    cout << sizeof(size_t) << endl;
 }
