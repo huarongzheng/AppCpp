@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<memory.h>
 #include<stdlib.h>
 #include<unistd.h>
 #include<sys/types.h>
@@ -10,6 +11,7 @@
 #include<iostream>
 #include<time.h>
 #include<algorithm>
+#include<typeinfo>
 
 using namespace std;
 
@@ -24,16 +26,29 @@ struct TestStruct {
     float fVal;
 };
 struct TestStruct1 {
-    int   num;
+    int  *num;
     char  ch;
-    char  ch1;
-    char  ch2;
     float fVal;
+    char  ch1;
+};
+
+struct BitField{
+    int a:5; // char is at least 1 byte, int at lesat 4
+    int b:3;
+    //int c:3; //no straddling byte
+};
+
+struct Flex {
+    union {   // union U is defining an union not declaring one thus no size. here the declaration is of size 4
+        int   num;
+        char  ch;
+    };
+    int buf[0];
 };
 
 int main()
 {
-    printf("offset is %u\n", offsetof(TestStruct, fVal));
+    printf("offset is %lu\n", offsetof(TestStruct, fVal));
 
     TestStruct testArray[10];
     int i=0;
@@ -41,16 +56,36 @@ int main()
         ele.num = i;
         i++;
     }
-    cout << sizeof(TestStruct1)<< endl;
     cout << (testArray)<< endl;
-    printf("addr=0x%lx\n", (char *)testArray+1);
+    printf("addr=0x%lx\n", (long unsigned)(char *)testArray+1);
 
-    TestStruct *test;
+    TestStruct *pTest;
     TestStruct init_struct={12,'a',12.3};
     char *pCh = &init_struct.ch;
-    test = container_of(pCh, TestStruct, ch);
-    printf("TestStruct->num =%d\n", test->num);
-    printf("TestStruct->ch =%c\n",  test->ch);
-    printf("TestStruct->ch =%f\n",  test->fVal);
+    pTest = container_of(pCh, TestStruct, ch);
+    printf("TestStruct->num =%d\n", pTest->num);
+    printf("TestStruct->ch =%c\n",  pTest->ch);
+    printf("TestStruct->ch =%f\n",  pTest->fVal);
+
+
+    TestStruct1 *pTest1=new TestStruct1();
+    cout << sizeof(TestStruct1) << endl;
+    pTest1->num = &i;
+    cout << *pTest1->num << endl; // that is *(pTest1->num) -> triumph * or &
+
+
+    Flex flex;
+    cout << "size of Flex " << sizeof(Flex) << endl;
+    cout << "address flex=" << (&flex)<< " flex+1=" << (&flex)+1 << endl;
+    cout << "type of flex " << typeid((&flex)+1).name() << endl;
+
+    //'0' = 0011 0000     'l'  = 0110 1100
+    char str[100] = "0134324324afsadfsdlfjlsdjfl";
+    BitField bitField;
+    cout << sizeof(BitField) << endl;
+    memcpy(&bitField, str, sizeof(BitField));
+    cout << bitField.a << endl;
+    cout << bitField.b << endl;
+
     return 0;
 }
