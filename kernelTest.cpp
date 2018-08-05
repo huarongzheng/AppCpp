@@ -87,5 +87,12 @@ int main()
     cout << bitField.a << endl;
     cout << bitField.b << endl;
 
+    int x=1;
+    if (*(char *) &x == 1) {
+        cout << "little endian" << endl;
+    } else {
+        cout << "big endian" << endl;
+    }
+
     return 0;
 }
