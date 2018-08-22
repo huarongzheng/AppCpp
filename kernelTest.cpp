@@ -78,6 +78,9 @@ int main()
     cout << "size of Flex " << sizeof(Flex) << endl;
     cout << "address flex=" << (&flex)<< " flex+1=" << (&flex)+1 << endl;
     cout << "type of flex " << typeid((&flex)+1).name() << endl;
+    flex.num=4321;
+    typeof(&flex+1) __tmp = &flex;
+    cout << "flex num " << __tmp->num << endl;
 
     //'0' = 0011 0000     'l'  = 0110 1100
     char str[100] = "0134324324afsadfsdlfjlsdjfl";
