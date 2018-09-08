@@ -61,6 +61,7 @@ int main()
 
     TestStruct *pTest;
     TestStruct init_struct={12,'a',12.3};
+    //TestStruct init_struct={.num=12,.ch='a',.fVal=12.3};
     char *pCh = &init_struct.ch;
     pTest = container_of(pCh, TestStruct, ch);
     printf("TestStruct->num =%d\n", pTest->num);

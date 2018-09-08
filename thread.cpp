@@ -142,6 +142,7 @@ int main(int argc, char** argv)
 #include<iostream>
 #include<time.h>
 #include<algorithm>
+#include<chrono>
 
 using namespace std;
 
@@ -170,6 +171,14 @@ int main()
     printf("val of i=%x\n", i);
 
 
+    using namespace std::chrono;
+    // std::chrono::milliseconds is an instatiation of std::chrono::duration:
+    milliseconds foo (1000); // 1 second
+    foo*=60;
+    minutes minVal;
+    minVal = std::chrono::duration_cast<minutes>(foo);
+    std::cout << "duration: " << foo.count() << " milliseconds" << endl;
+    std::cout << "duration: " << minVal.count() << " minutes" << endl;
 
 #if 0
     vector<int> ary(10,2);
@@ -242,4 +251,6 @@ int main()
     cout << sizeof(char) << endl;
     cout << sizeof(unsigned long) << endl;
     cout << sizeof(size_t) << endl;
+    free(s4);
+    free(s5);
 }
