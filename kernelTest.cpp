@@ -32,6 +32,11 @@ struct TestStruct1 {
     char  ch1;
 };
 
+struct Merge {
+    TestStruct  s0;
+    TestStruct1 s1;
+};
+
 struct BitField{
     int a:5; // char is at least 1 byte, int at lesat 4
     int b:3;
@@ -60,8 +65,12 @@ int main()
     printf("addr=0x%lx\n", (long unsigned)(char *)testArray+1);
 
     TestStruct *pTest;
-    TestStruct init_struct={12,'a',12.3};
-    //TestStruct init_struct={.num=12,.ch='a',.fVal=12.3};
+    //TestStruct init_struct={12,'a',12.3};
+    TestStruct init_struct=
+    {.num=12,
+     .ch='a',
+     .fVal=12.3
+    };
     char *pCh = &init_struct.ch;
     pTest = container_of(pCh, TestStruct, ch);
     printf("TestStruct->num =%d\n", pTest->num);
@@ -70,7 +79,9 @@ int main()
 
 
     TestStruct1 *pTest1=new TestStruct1();
-    cout << sizeof(TestStruct1) << endl;
+    cout<< "sizeof TestStruct " << sizeof(TestStruct) << endl;
+    cout<< "sizeof TestStruct1 " << sizeof(TestStruct1) << endl;
+    cout<< "sizeof Merge " << sizeof(Merge) << endl;
     pTest1->num = &i;
     cout << *pTest1->num << endl; // that is *(pTest1->num) -> triumph * or &
 
@@ -97,6 +108,18 @@ int main()
     } else {
         cout << "big endian" << endl;
     }
+
+    std::string foo = "foo-string";
+    std::string bar = "bar-string";
+    std::vector<std::string> myvector;
+
+    myvector.push_back (foo);                    // copies
+    myvector.push_back (std::move(bar));         // moves
+
+    std::cout << "myvector contains:";
+    for (std::string &x:myvector) std::cout << ' ' << x;
+    std::cout << '\n';
+    std::cout << "foo=" << &(myvector[1]) << " bar=" << &bar << '\n';
 
     return 0;
 }
