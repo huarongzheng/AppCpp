@@ -1,8 +1,8 @@
 CXXFLAGS =	-Wl,--no-as-needed -DDEBUG -g -std=gnu++11 -pthread
 #CXXFLAGS =	-O2 -Wl,--no-as-needed -DDEBUG -g -std=c++11 -pthread
 
-OBJS =		cpuAffinity.o
-#OBJS =		thread.o
+#OBJS =		cpuAffinity.o
+OBJS =		dataStructure.o
 
 LIBS = 
 
