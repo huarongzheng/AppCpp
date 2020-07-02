@@ -81,8 +81,9 @@ int main()
 {
     char result = '\0';
     //char str[] = "hasahdjsa";
-    char str[] = "JUJCGGXXT";
+    //char str[] = "JUJCGGXXT";
     //char str[] = "AA137123451BACC5gDeF012fbclY39876";
+    char *str=new char[4]{'O','M','O','\0'};
 
     long beginTime = clock();
     for (int i = 0; i < 1000; ++i)
