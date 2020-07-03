@@ -38,7 +38,6 @@ class List
 {
 public:
     static constexpr int ALL = std::numeric_limits<int>::max();
-    Node<T> *m_pHead;
     List(const int &nLen)
     {
         m_pHead = new Node<T>(static_cast<T>(-1));
@@ -107,17 +106,18 @@ public:
     }
     void reverse2()
     {
-        Node<T> *pC = nullptr;
-        Node<T> *pN = m_pHead->pNext;
-        while(nullptr != pN)
+        Node<T> *pHead1 = new Node<T>(static_cast<T>(-2));
+        Node<T> *pC = m_pHead->pNext;
+        while(nullptr != pC)
         {
-            std::cout << "process node: " << pN->data << "  next: " << pN->pNext << std::endl;
-            m_pHead->pNext = pN->pNext;
-            pN->pNext      = pC;
-            pC             = pN;
-            pN             = m_pHead->pNext;
+            std::cout << "process node: " << pC->data << "  next: " << pC->pNext << std::endl;
+            m_pHead->pNext = pC->pNext;
+            pC->pNext      = pHead1->pNext;
+            pHead1->pNext  = pC;
+            pC             = m_pHead->pNext;
         }
-        m_pHead->pNext = pC;
+        m_pHead->pNext = pHead1->pNext;
+        delete pHead1;
     }
     void show(int num)
     {
@@ -133,6 +133,7 @@ public:
         }
     }
 
+    Node<T> *m_pHead;
 };
 
 int main()
