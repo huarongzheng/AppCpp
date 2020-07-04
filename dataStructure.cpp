@@ -50,12 +50,12 @@ public:
     }
     void pushFront(const int &nLen)
     {
-        Node<T> *pC = m_pHead->pNext;
+        Node<T> *pC;
         for (int i = 0; i < nLen; i++)
         {
-            m_pHead->pNext = new Node<T>(static_cast<T>(i));
-            m_pHead->pNext->pNext = pC;
-            pC = m_pHead->pNext;
+            pC = new Node<T>(static_cast<T>(i));
+            pC->pNext = m_pHead->pNext;
+            m_pHead->pNext = pC;
         }
     }
     void pushBack(const int &nLen)
@@ -84,22 +84,14 @@ public:
     void reverse1()
     {
         Node<T> *pHead1 = new Node<T>(static_cast<T>(-2));
-        Node<T> *pC1 = pHead1->pNext;
-        Node<T> *pC  = m_pHead->pNext;
-        Node<T> *pM;
-        while (nullptr != pC)
+        Node<T> *pC = m_pHead->pNext;
+        while(nullptr != m_pHead->pNext)
         {
-            // remove from old
+            pC             = m_pHead->pNext;
+            std::cout << "process node: " << pC->data << "  next: " << pC->pNext << std::endl;
             m_pHead->pNext = pC->pNext;
-            //std::cout << "remove node: " << pC->data << "  next: " << pC->pNext << std::endl;
-            pM = pC;
-            pC = m_pHead->pNext;
-
-            // insert to new
-            pHead1->pNext = pM;
-            //std::cout << "insert node: " << pM->data << "  next: " << pM->pNext << std::endl;
-            pHead1->pNext->pNext = pC1;
-            pC1 = pHead1->pNext;
+            pC->pNext      = pHead1->pNext;
+            pHead1->pNext  = pC;
         }
         m_pHead->pNext = pHead1->pNext;
         delete pHead1;
@@ -107,14 +99,18 @@ public:
     void reverse2()
     {
         Node<T> *pHead1 = new Node<T>(static_cast<T>(-2));
-        Node<T> *pC = m_pHead->pNext;
-        while(nullptr != pC)
+        Node<T> *pC;
+        while (nullptr != m_pHead->pNext)
         {
-            std::cout << "process node: " << pC->data << "  next: " << pC->pNext << std::endl;
+            // remove from old
+            pC = m_pHead->pNext;
             m_pHead->pNext = pC->pNext;
-            pC->pNext      = pHead1->pNext;
-            pHead1->pNext  = pC;
-            pC             = m_pHead->pNext;
+            //std::cout << "remove node: " << pC->data << "  next: " << pC->pNext << std::endl;
+
+            // insert to new
+            pC->pNext = pHead1->pNext;
+            pHead1->pNext = pC;
+            //std::cout << "insert node: " << pM->data << "  next: " << pM->pNext << std::endl;
         }
         m_pHead->pNext = pHead1->pNext;
         delete pHead1;
