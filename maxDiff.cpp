@@ -64,7 +64,6 @@ int maxDifference(vector<int> a)
 
 int main()
 {
-    ofstream fout("output");
     ifstream cin("input");
 
     int a_count;
@@ -83,9 +82,7 @@ int main()
 
     int res = maxDifference(a);
 
-    fout << res << "\n";
-
-    fout.close();
+    cout << "max diff = " << res << "\n";
 
     return 0;
 }
