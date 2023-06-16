@@ -19,19 +19,23 @@ template <class T>
 class Node
 {
 public:
-    Node(T in)
-    {
+    Node(T in) {
         data = in;
-        std::cout << "node ctor: " << data << std::endl;
-    }
-    virtual ~Node()
-    {
-        std::cout << "node dtor: " << data << std::endl;
+        std::cout << "ctor " << this << " data " << data << std::endl;
     }
 
-    T     data{};
+    virtual ~Node() {
+        std::cout << "dtor " << this << " data " << data << std::endl;
+    }
+
+    T data;
     Node<T> *pNext{nullptr};
 };
+
+template <class T>
+void showNode(Node<T> *node) {
+    std::cout << "current node value = " << node->data << std::endl;
+}
 
 template <class T>
 class List
@@ -40,96 +44,96 @@ public:
     static constexpr int ALL = std::numeric_limits<int>::max();
     List(const int &nLen)
     {
-        m_pHead = new Node<T>(static_cast<T>(-1));
-        pushFront(nLen);
-        //pushBack(nLen);
+        for (int i = 0; i< nLen; i++) {
+            pushFront(i);
+            //pushBack(i);
+        }
     }
     virtual ~List()
     {
-        remove(ALL);
+        remove();
     }
-    void pushFront(const int &nLen)
+    void pushFront(T in)
+    {
+        pushFront(new Node<T>(in));
+    }
+
+    void pushFront(Node<T> *pI)
+    {
+        pI->pNext = pHead;
+        pHead = pI;
+    }
+
+    void pushBack(T in)
+    {
+        pushBack(new Node<T>(in));
+    }
+
+    void pushBack(Node<T> *pI)
+    {
+        Node<T> *pC = pHead;
+        Node<T> *pPrev;
+        while (pC) {
+            pPrev = pC;
+            pC = pC->pNext;
+        }
+        if (pPrev) {
+            pPrev->pNext = pI;
+        } else {
+            pHead = pI;
+        }
+    }
+
+    int traverse (void (*cb)(Node<T> *), int num = ALL) {
+        int i = 0;
+        Node<T> *pC = pHead;
+        while (pC && i < num) {
+            cb(pC);
+            pC = pC->pNext;
+            i++;
+        }
+    }
+
+    // remove num nodes
+    int remove(int num = ALL)
     {
         Node<T> *pC;
-        for (int i = 0; i < nLen; i++)
-        {
-            pC = new Node<T>(static_cast<T>(i));
-            pC->pNext = m_pHead->pNext;
-            m_pHead->pNext = pC;
-        }
-    }
-    void pushBack(const int &nLen)
-    {
-        Node<T> *pC = m_pHead;
-        for (int i = 0; i < nLen; i++)
-        {
-            pC->pNext = new Node<T>(static_cast<T>(i));
-            pC       = pC->pNext;
-        }
-    }
-    void remove(int num)
-    {
-        Node<T> *pC = m_pHead->pNext;
-        while(nullptr != pC && num)
-        {
-            m_pHead->pNext = pC->pNext;
+        int i = 0;
+
+        while (i< num && pHead) {
+            pC = pHead;
+            pHead = pHead->pNext;
             delete pC;
-            pC = m_pHead->pNext;
-            if (ALL != num)
-            {
-                num--;
-            }
+            i++;
         }
+        return i;
     }
+
     void reverse1()
     {
-        Node<T> *pHead1 = new Node<T>(static_cast<T>(-2));
-        Node<T> *pC = m_pHead->pNext;
-        while(nullptr != m_pHead->pNext)
-        {
-            pC             = m_pHead->pNext;
-            std::cout << "process node: " << pC->data << "  next: " << pC->pNext << std::endl;
-            m_pHead->pNext = pC->pNext;
-            pC->pNext      = pHead1->pNext;
-            pHead1->pNext  = pC;
+        Node<T> *pHead1{nullptr};
+        Node<T> *pC;
+
+        std::cout << "reverse1" << std::endl;
+        while (pHead) {
+            pC = pHead;
+            pHead = pHead->pNext;
+            pC->pNext = pHead1;
+            pHead1 = pC;
         }
-        m_pHead->pNext = pHead1->pNext;
-        delete pHead1;
+        pHead = pHead1;
     }
+
     void reverse2()
     {
-        Node<T> *pHead1 = new Node<T>(static_cast<T>(-2));
-        Node<T> *pC;
-        while (nullptr != m_pHead->pNext)
-        {
-            // remove from old
-            pC = m_pHead->pNext;
-            m_pHead->pNext = pC->pNext;
-            //std::cout << "remove node: " << pC->data << "  next: " << pC->pNext << std::endl;
-
-            // insert to new
-            pC->pNext = pHead1->pNext;
-            pHead1->pNext = pC;
-            //std::cout << "insert node: " << pM->data << "  next: " << pM->pNext << std::endl;
-        }
-        m_pHead->pNext = pHead1->pNext;
-        delete pHead1;
     }
-    void show(int num)
+
+    void show(int num = ALL)
     {
-        Node<T> *pC = m_pHead->pNext;
-        while(nullptr != pC && num)
-        {
-            std::cout << "show node: " << pC->data << "  next: " << pC->pNext << std::endl;
-            pC = pC->pNext;
-            if (ALL == num)
-            {
-                num--;
-            }
-        }
+        traverse(showNode, num);
     }
 
-    Node<T> *m_pHead;
+    Node<T> *pHead{nullptr};
 };
 
 int main()
@@ -138,7 +142,7 @@ int main()
     myList.show(List<int>::ALL);
     myList.reverse1();
     myList.show(List<int>::ALL);
-    myList.reverse2();
-    myList.show(List<int>::ALL);
+    //myList.reverse2();
+    //myList.show(List<int>::ALL);
     return 0;
 }
