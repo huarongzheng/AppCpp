@@ -5,7 +5,9 @@ using namespace std;
 class Parent
 {
 public:
-    virtual ~Parent() {}
+    virtual ~Parent() {
+        printf("~Parent()\n");
+    }
     void F()
     {
         printf("Parent.F()\n");
@@ -29,7 +31,9 @@ public:
 class ChildOne: public Parent
 {
 public:
-    virtual ~ChildOne() {}
+    ~ChildOne() {
+        printf("~ChildOne()\n");
+    }
     //重写(overwrite)父类函数
     void F()
     {
@@ -62,11 +66,18 @@ int main()
     ChildOne *p4;
     //p4 = new Parent(); //compilation error: invalid conversion from ‘Parent*’ to ‘ChildOne*’ [-fpermissive]
     p4 = dynamic_cast<ChildOne *>(p1);
-    cout << "cast C->P->C succes sresult =" << p4 << endl;
+    cout << "cast C->P->C success result =" << p4 << endl;
+
+    p4->F();
+    p4->G();
+
     p4 = dynamic_cast<ChildOne *>(p2);
     cout << "cast P->C fail result =" << p4 << endl;
     Parent *p5 = dynamic_cast<Parent *>(p3);
-    cout << "cast C->P succes result =" << p5 << endl;
+    cout << "cast C->P success result =" << p5 << endl;
+
+    p5->F();
+    p5->G();
 
 
     //重载(overload)

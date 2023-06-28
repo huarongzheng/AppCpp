@@ -8,9 +8,10 @@
 using namespace std;
 /**
  * @param[in] str the given string
+ * @param[in] pos of the first character that only appear once
  * @return the first character that only appear once
  */
-char FirstOnceChar(char *str)
+char FirstOnceChar(char *str, int &pos)
 {
     if(str == NULL)
         return '\0';
@@ -20,79 +21,48 @@ char FirstOnceChar(char *str)
     char *pCur = str;
     while(*pCur != '\0')
     {
-        if(*pCur>=0)
+        if (*pCur>=0)
             hashtable[*(pCur++)]++;
         else
             hashtable[*(pCur++)+256]++;
     }
 
-    while(*str != '\0')
+    pCur = str;
+    while (*pCur != '\0')
     {
         int index;
-        if(*str>=0)
-            index = *str;
+        if (*pCur >= 0)
+            index = *pCur;
         else
-            index = *str+256;
+            index = *pCur + 256;
 
-        if(hashtable[index] == 1)
-            return *str;
+        if (hashtable[index] == 1) {
+            pos = pCur - str;
+            return *pCur;
+        }
         else
-            str++;
+            pCur++;
     }
     return '\0';
-}
-
-/**
- * @param[in] str the given string
- * @return the first character that only appear once
- */
-int IndexOfFirstOnceChar(char *str)
-{
-    if(str == NULL)
-        return -1;
-
-    int len = strlen(str);
-    int hashtable[256];
-    memset(hashtable,0,sizeof(hashtable));
-    int i;
-    for(i=0;i<len;i++)
-    {
-        if(str[i]>=0)
-            hashtable[str[i]]++;
-        else
-            hashtable[str[i]+256]++;
-    }
-
-    for(i=0;i<len;i++)
-    {
-        int index;
-        if(str[i]>=0)
-            index = str[i];
-        else
-            index = str[i]+256;
-
-        if(hashtable[index] == 1)
-            return i;
-    }
-    return -1;
 }
 
 int main()
 {
     char result = '\0';
+    int  index{};
     //char str[] = "hasahdjsa";
     //char str[] = "JUJCGGXXT";
-    //char str[] = "AA137123451BACC5gDeF012fbclY39876";
-    char *str=new char[4]{'O','M','O','\0'};
+    char str[] = "AA137123451BACC5gDeF012fbclY39876";
+    //char *str=new char[4]{'O','M','O','\0'};
 
     long beginTime = clock();
-    for (int i = 0; i < 1000; ++i)
+    for (int i = 0; i < 1000000; ++i)
     {
-        result = FirstOnceChar(str);
+        result = FirstOnceChar(str, index);
     }
     long endTime = clock();
 
-    printf("%c\n",result);
+    printf("%c appears once on pos=%d\n", result, index);
     //cout<<"beginTime:"<<beginTime<<"  endTime:"<<endTime<<endl;
     cout<<"Time: "<<double(endTime-beginTime)/CLOCKS_PER_SEC<<endl;
     return 0;
